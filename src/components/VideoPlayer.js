@@ -13,7 +13,7 @@ const sources = {
   test: 'http://media.w3.org/2010/05/video/movie_300.webm'
 };
 
-export default class PlayerControlExample extends Component {
+export default class VideoPlayer extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -140,5 +140,3 @@ export default class PlayerControlExample extends Component {
     );
   }
 }
-
-//https://res.cloudinary.com/qatar-tube/raw/upload/v1625757530/Ulker-Subtitle_ce5cac.srt

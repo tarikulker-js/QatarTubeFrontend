@@ -80,8 +80,6 @@ label[for="file-input"] { display: block; margin-bottom: 1em; font-size: 1em; co
   z-index: 9999 !important;
   width: 100% !important;
   height: 100vh !important;
-  cursor: none !important;
-
 
 }
 

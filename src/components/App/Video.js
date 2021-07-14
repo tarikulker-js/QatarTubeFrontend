@@ -19,6 +19,7 @@ const { Title, Text } = Typography;
 function VideoPage() {
     var { videoId } = useParams();
     var [videoInfos, setVideoInfos] = useState(null);
+	var [commentsInfos, setCommentsInfos] = useState(null);
 
     var [currentTime, setCurrentTime] = useState();
     var [playbackSpeed, setPlaybackSpeed] = useState();
@@ -43,15 +44,28 @@ function VideoPage() {
             }
         })
             .then((res) => {
-                console.log(res);
-
                 setVideoInfos(res.data.video);
             })
             .catch((err) => M.toast({ html: "Bir hata oluştu! Olağan hatalar: \"Video bulunamadı.\", \"Sunucularımıza bağlanılamadı.\"" }));
+		
+		axios.post(`${API_URL}/getcomments/${videoId}`, {  }, {
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": "Bearer " + localStorage.getItem("jwt")
+			}
+		}).then((comments) => {
+			alert("comments geted. ")
+			console.log("comments:" + comments.data);
+			alert("comments length", comments.data.length);
+			
+			setCommentsInfos(comments.data);
+					
+		})
+		
     }
 
     useEffect(() => {
-        updateVideoInfos();
+		updateVideoInfos();
 
     }, [])
 
@@ -254,46 +268,38 @@ return (
                             <Row gutter={[16, 16]} >
                                 <Col flex="5 1 400px" >
                                     <Form layout={"vertical"} style={{ backgroundColor: 'white', height: 700, overflowY: 'scroll', padding: 50, textAlign: 'center' }} name="basic" initialValues={{ remember: true, }} className="videoCommentLayout" >
-                                        <Form.Item>
-                                            <div style={{ display: "flex", width: "100%" }}>
-                                                <Input placeholder="Yorum Ekleyin" style={{ width: "75%" }} className="input cyan" /> <Button className="btn cyan" style={{ width: "25%" }} >Yorum yap</Button>
-                                            </div>
-                                        </Form.Item>
-                                        <Form.Item>
-                                            <div style={{ display: "" }}>
-                                                <div className="videoCommentUserInfos" style={{ display: "flex" }}>
-                                                    <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" style={{ width: "50px", height: "50px" }} />
-                                                    <span style={{ marginLeft: "5px" }}><h5>Tarık Ülker</h5></span>
-                                                </div>
+										{ console.log(commentsInfos) }
+										
+                                        { 
+											commentsInfos ?
+												commentsInfos.map((comment) => {
+													console.log(comment);
 
-                                                <span><p>Video çekimi güzel olmuş, kameramanı tebrik ederim. Kaplumbağaların güzelliğine kelimeler yetmez zaten. :)</p></span>
+													return(
+														<Form.Item> 
+															<div style={{ display: "" }}> 
+																<div className="videoCommentUserInfos" style={{ display: "flex" }}> 
+																	{/* <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" style={{ width: "50px", height: "50px" }} /> */}
+																	<span style={{ marginLeft: "5px" }}><h5>{comment.postedBy}</h5></span> 
+																</div> 
+																<span><p>{comment.text}</p></span> 
+																<div className="videoCommentEvents" style={{ display: "flex" }}> 
+																	{ comment.likes.includes(localStorage.getItem("id")) === true ? <div><AiFillLike style={{}} /> { comment.likes.length } Like</div> : <div> <AiOutlineLike style={{}} /> { comment.likes.length } Like </div>}
 
-                                                <div className="videoCommentEvents" style={{ display: "flex" }}>
-                                                    <AiFillLike style={{}} />
-                                                    <AiOutlineDislike style={{ marginLeft: "15px" }} />
+																	{ comment.dislikes.includes(localStorage.getItem("id")) === true ? <div><AiFillDislike style={{}} /> { comment.dislikes.length } Dislike</div> : <div> <AiOutlineDislike style={{}} /> { comment.dislikes.length } Dislike </div>}
 
-                                                    <h6 style={{ marginLeft: "15px", fontSize: "15px", display: "flex", marginTop: "0%" }}>7 Cevap</h6>
-                                                </div>
-                                            </div>
-                                        </Form.Item>
+																	<h6 style={{ marginLeft: "30px", fontSize: "15px", display: "flex", marginTop: "0%" }}>{ comment.replys.length } Cevap</h6> 
 
-                                        <Form.Item>
-                                            <div style={{ display: "" }}>
-                                                <div className="videoCommentUserInfos" style={{ display: "flex" }}>
-                                                    <img src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" style={{ width: "50px", height: "50px" }} />
-                                                    <span style={{ marginLeft: "5px" }}><h5>Gecelerin Yargıcı</h5></span>
-                                                </div>
-                                                <span><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquet convallis dui, varius fermentum nisi condimentum id. Donec eu luctus mauris. Donec ultrices nulla sapien, ut rhoncus leo dapibus ut. Quisque tristique leo vel placerat fringilla. Nam a leo velit. Nam pretium ac odio sed malesuada. Morbi faucibus ultrices purus dapibus convallis. Aliquam finibus nec ipsum sit amet ultrices. Nam suscipit velit et sodales suscipit. Duis porttitor vehicula aliquam. Quisque venenatis, nisi vitae pharetra ornare, elit dolor auctor lacus, a placerat turpis nulla quis velit. In molestie efficitur nunc. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p></span>
-                                                <div className="videoCommentEvents" style={{ display: "flex" }}>
-                                                    <AiOutlineLike style={{}} />
-                                                    <AiFillDislike style={{ marginLeft: "15px" }} />
+																</div> 
+															</div> 
+														</Form.Item>
 
-                                                    <h6 style={{ marginLeft: "15px", fontSize: "15px", display: "flex", marginTop: "0%" }}>7 Cevap</h6>
-                                                </div>
-                                            </div>
-                                        </Form.Item>
-
-
+													)
+												})
+											:
+												<h4>Yorumlar yükleniyor... </h4>
+										}
+										
                                     </Form>
                                 </Col>
                             </Row>
