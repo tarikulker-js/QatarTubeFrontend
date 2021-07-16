@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { API_URL } from '../../config.json';
 import M from 'materialize-css';
 import Select from 'react-select';
 import axios from 'axios';
@@ -9,8 +8,10 @@ import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'; //unlike \ und
 import { AiFillLike, AiFillDislike } from 'react-icons/ai'; //liked | undisliked
 import Popup from 'reactjs-popup'; 
 import 'reactjs-popup/dist/index.css';
+//https://qatar-tube.run-eu-central1.goorm.io/watch/60ec0457b772bf16eaec65d0
 
 import VideoPlayer from '../VideoPlayer';
+import { API_URL } from '../../config.json';
 
 import '../../App.css';
 
@@ -22,8 +23,11 @@ function VideoPage() {
     var { videoId } = useParams();
     var [videoInfos, setVideoInfos] = useState(null);
     var [commentsInfos, setCommentsInfos] = useState(null);
-    var [replyCommentsInfos, setReplyCommentsIfos] = useState(null);
-
+    var [replyCommentsInfos, setReplyCommentsInfos] = useState(null);
+	
+	var [commentText, setCommentText] = useState(null);
+	var [replyCommentText, setReplyCommentText] = useState(null);
+	
     var [currentTime, setCurrentTime] = useState();
     var [playbackSpeed, setPlaybackSpeed] = useState();
 
@@ -45,8 +49,7 @@ function VideoPage() {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
-        })
-            .then((res) => {
+        }).then((res) => {
                 setVideoInfos(res.data.video);
             })
 
@@ -59,8 +62,7 @@ function VideoPage() {
             console.log(comments.data);
             setCommentsInfos(comments.data);
 
-        })
-            .catch((err) => alert(err))
+        }).catch((err) => alert(err))
 
         axios.post(`${API_URL}/getreplycomments/${videoId}`, {}, {
             headers: {
@@ -69,10 +71,9 @@ function VideoPage() {
             }
         }).then((replyComments) => {
             console.log(replyComments.data);
-            setReplyCommentsIfos(replyComments.data);
+            setReplyCommentsInfos(replyComments.data);
 
-        })
-            .catch((err) => alert(err))
+        }).catch((err) => alert(err))
 
         //getreplycomments
     }
@@ -171,6 +172,19 @@ function VideoPage() {
         })
 
     }
+	
+	function addComment(){
+		axios.post(`${API_URL}/addcomment`, { videoId: videoId, userId: localStorage.getItem("id"), text: commentText }, {
+			headers: {
+				"Authorization": "Bearer " + localStorage.getItem("jwt")
+			}
+		})
+		.then((result) => {
+			alert(result.data.message);
+			
+			updateVideoInfos();
+		})
+	}
 
     function likeComment(commentId) {
         axios.put(`${API_URL}/likecomment`, { commentId: commentId, userId: localStorage.getItem("id") }, {
@@ -223,8 +237,79 @@ function VideoPage() {
 
             }).catch((err) => alert(err))
     }
+	
+	function likeReplyComment(replyCommentId) {
+        axios.put(`${API_URL}/likereplycomment`, { replyCommentId: replyCommentId, userId: localStorage.getItem("id") }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+            .then((res) => {
+                updateVideoInfos();
 
+            }).catch((err) => alert(err))
+    }
 
+    function unlikeReplyComment(replyCommentId) {
+        axios.put(`${API_URL}/unlikereplycomment`, { replyCommentId: replyCommentId, userId: localStorage.getItem("id") }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+            .then((res) => {
+                updateVideoInfos();
+
+            }).catch((err) => alert(err))
+    }
+
+    function dislikeReplyComment(replyCommentId) {
+        axios.put(`${API_URL}/dislikereplycomment`, { replyCommentId: replyCommentId, userId: localStorage.getItem("id") }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+            .then((res) => {
+                updateVideoInfos();
+
+            }).catch((err) => alert(err))
+    }
+
+    function undislikeReplyComment(replyCommentId) {
+        axios.put(`${API_URL}/undislikereplycomment`, { replyCommentId: replyCommentId, userId: localStorage.getItem("id") }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+            .then((res) => {
+                updateVideoInfos();
+
+            }).catch((err) => alert(err))
+    }
+	
+	function replyComment(commentId){
+		axios.post(`${API_URL}/replyComment`, { commentId: commentId, videoId: videoId, userId: localStorage.getItem("id"), text: replyCommentText }, {
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("jwt")
+			}
+		})
+		.then((result) => {
+			if(result.data.message === "Başarılı. "){
+				alert(result.data.message, "Başarılıymış :D. ")
+			}else{
+				alert(result.data.message, "Bilinmeyen değer geldi başqanım. ")
+			}
+			
+			setReplyCommentText("");
+			updateVideoInfos();
+			
+		})
+		
+		
+	}
 
     return (
 
@@ -334,8 +419,9 @@ function VideoPage() {
                                 <Row gutter={[16, 16]} >
                                     <Col flex="5 1 400px" >
                                         <Form layout={"vertical"} style={{ backgroundColor: 'white', height: 700, overflowY: 'scroll', padding: 50, textAlign: 'center' }} name="basic" initialValues={{ remember: true, }} className="videoCommentLayout" >
-                                            {console.log("commentInfos: "), console.log(commentsInfos)}
-
+											
+                                            <div style={{ display: "flex" }}><input placeholder="Bu videoyu yorumlayın. . " value={commentText} onChange={(e) => setCommentText(e.target.value)} /> <button className="btn red medium" onClick={() => addComment()} type="submit" >Yorumla</button></div>	
+											
                                             {
                                                 commentsInfos ?
                                                     commentsInfos.map((comment) => {
@@ -343,7 +429,7 @@ function VideoPage() {
                                                         console.log(comment);
 
                                                         return (
-                                                            <Form.Item style={{ backgroundColor: "blue" }}>
+                                                            <Form.Item>
                                                                 <div style={{ display: "" }}>
                                                                     <div className="videoCommentUserInfos" style={{ display: "flex" }}>
                                                                         <img src={comment.postedBy.pic} style={{ width: "50px", height: "50px" }} />
@@ -355,13 +441,37 @@ function VideoPage() {
 
                                                                         {comment.dislikes.includes(localStorage.getItem("id")) === true ? <div><AiFillDislike style={{}} onClick={() => undislikeComment(comment._id)} /> {comment.dislikes.length} Dislike</div> : <div> <AiOutlineDislike style={{}} onClick={() => dislikeComment(comment._id)} /> {comment.dislikes.length} Dislike </div>}
 
-                                                                        <h6 style={{ marginLeft: "30px", fontSize: "15px", display: "flex", marginTop: "0%" }}>{comment.replys.length} Cevap</h6>
-
-                                                                        <Popup trigger={<button> Trigger</button>} position="bottom center"> 
+                                                                        <Popup trigger={<h6 style={{ marginLeft: "30px", fontSize: "15px", display: "flex", marginTop: "0%" }}>{comment.replys.length} Cevap</h6>} position="bottom right"> 
                                                                             <div>
-                                                                                Popup content here !!
+																				<div style={{ display: "flex" }}><input placeholder="Bu yorumu cevaplayın. " value={replyCommentText} onChange={(e) => setReplyCommentText(e.target.value)} /> <button className="btn red medium" onClick={() => replyComment(comment._id)} type="submit" >Cevapla</button></div>
+																				
+                                                                                { replyCommentsInfos ? 
+																						<div>
+																							{replyCommentsInfos.map((reply) =>
+																								<div>
+																									{ reply.comment === comment._id 
+																										?
+																										<div>
+																											<div className="videoCommentUserInfos" style={{ display: "flex" }}>
+																												<img src={reply.postedBy.pic} style={{ width: "50px", height: "50px" }} />
+																												<span style={{ marginLeft: "5px" }}><h5>{reply.postedBy.name}</h5></span>
+																											</div>
+																											<span><p>{ reply.text }</p></span>
+																											<div>
+																												{reply.likes.includes(localStorage.getItem("id")) === true ? <div><AiFillLike style={{}} onClick={() => unlikeReplyComment(reply._id)} /> {reply.likes.length} Like</div> : <div> <AiOutlineLike style={{}} onClick={() => likeReplyComment(reply._id)} /> {reply.likes.length} Like </div>}
+																												
+																												{reply.dislikes.includes(localStorage.getItem("id")) === true ? <div><AiFillDislike style={{}} onClick={() => undislikeReplyComment(reply._id)} /> {reply.dislikes.length} Dislike</div> : <div> <AiOutlineDislike style={{}} onClick={() => dislikeReplyComment(reply._id)} /> {reply.dislikes.length} Dislike </div>}
+																											</div>
+																										</div>
+																										:
+																										""}
+																								</div>
+																							)}
+																						</div> 
+																					: <h4>Yükleniyor... </h4>}
                                                                             </div> 
                                                                         </Popup>
+																		
                                                                     </div>
                                                                 </div>
                                                             </Form.Item>

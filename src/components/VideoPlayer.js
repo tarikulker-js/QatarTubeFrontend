@@ -5,7 +5,6 @@ import { Button } from 'reactstrap';
 
 import '../App.css';
 
-
 const sources = {
   sintelTrailer: 'http://media.w3.org/2010/05/sintel/trailer.mp4',
   bunnyTrailer: 'http://media.w3.org/2010/05/bunny/trailer.mp4',
