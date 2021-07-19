@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 import M from 'materialize-css';
+import { QuntuTheme, Header, HeaderCenter, HeaderLeft, HeaderRight, Content, Footer, FooterBottom, FooterMiddle, FooterTop, GraphicCardItem, RegisterPanel } from './lib/quntu-ui-v1/quntu-ui-v1';
 
-import {API_URL} from './config.json';
+import { API_URL, logo } from './config.json';
 
 //pages import
 import Home from './components/App/Home';
@@ -26,20 +27,58 @@ function App() {
         "Authorization": "Bearer " + localStorage.getItem("jwt")
       }
     }).then((res) => res.json())
-    .then((data) => {
-      console.log("JWT Verify", data);
+      .then((data) => {
+        console.log("JWT Verify", data);
 
-      if(data.error === null && data.auth === true){
-        localStorage.setItem("logined", true);
-      }else if(data.error !== null && data.auth !== true){
-        localStorage.setItem("logined", false);
-      }
-    })
-    
+        if (data.error === null && data.auth === true) {
+          localStorage.setItem("logined", true);
+        } else if (data.error !== null && data.auth !== true) {
+          localStorage.setItem("logined", false);
+        }
+      })
+
   }, [])
 
   return (
     <div className="App">
+      <QuntuTheme mode="dark" color1="#70a2fb" color2="#cf46fe"></QuntuTheme>
+      <Header>
+        <HeaderLeft>
+          <img src={logo} style={{ objectFit: 'contain', backgroundColor: "#8a8a8a" }} onClick={() => window.location="/"} />
+        </HeaderLeft>
+        <HeaderCenter>
+          {
+            localStorage.getItem("logined") === "true"
+              ?
+
+              <center>
+                <button style={{ width: "100%" }}  onClick={() => window.location="/"}><a href="/">Ana Sayfa</a></button>
+                <br />
+                <button style={{ width: "100%" }}  onClick={() => window.location="/channel"}><a href="/">Kanalım</a></button>
+                <br />
+                <button style={{ width: "100%" }}  onClick={() => window.location="/subvideos"}><a href="/">Abonelikler</a></button>
+                <br />
+                <button style={{ width: "100%" }}  onClick={() => window.location="/trends"}><a href="/">Trendler</a></button>
+                <br />
+                <button style={{ width: "100%" }}  onClick={() => window.location="/logout"}><a href="/">Çıkış Yap</a></button>
+                <br />
+
+              </center>
+              :
+              <div>
+                <button style={{ width: "100%" }} onClick={() => window.location="/login"}><a href="/login">Giriş Yap</a></button>
+                <br />
+                <button style={{ width: "100%" }} onClick={() => window.location="/register"}><a href="/register">Kayıt Ol</a></button>
+                <br />
+
+              </div>
+
+          }
+        </HeaderCenter>
+        <HeaderRight>
+
+        </HeaderRight>
+      </Header>
 
       <Switch>
         <Route path="/watch/:videoId">
@@ -61,14 +100,23 @@ function App() {
           <Home />
         </Route>
       </Switch>
+
+      <Footer>
+        <FooterTop>
+          <h5>Developed by Tarik Ulker. </h5>
+        </FooterTop>
+        <FooterMiddle><h5>Developed by Tarik Ulker. </h5></FooterMiddle>
+        <FooterBottom></FooterBottom>
+      </Footer>
+
     </div>
   );
 }
 
 export default App;
 
-function Logout(){
-  return(
+function Logout() {
+  return (
     <div>
       <h4>Çıkış yapılıyor... Lütfen bekleyiniz...</h4>
 
@@ -82,8 +130,8 @@ function Logout(){
 
         localStorage.setItem("logined", false),
 
-        setTimeout(function(){
-          M.toast({html: "Çıkış yapılıyor, lütfen bekleyiniz...", classes: "red darken-3"})
+        setTimeout(function () {
+          M.toast({ html: "Çıkış yapılıyor, lütfen bekleyiniz...", classes: "red darken-3" })
         }, 5000)
       }
 

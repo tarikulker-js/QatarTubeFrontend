@@ -23,7 +23,7 @@
 }
 
 h1,h2,h3,h4,h5,h6,p{
-  color: black;
+  color: white;
 }
 
 
@@ -116,7 +116,7 @@ label[for="file-input"] { display: block; margin-bottom: 1em; font-size: 1em; co
 }
 
 .videoInfos{
-  background-color: #9e2baf;
+  background-color: #1e2122;
   width: 75%;
   height: 80vh;
 
@@ -132,7 +132,7 @@ label[for="file-input"] { display: block; margin-bottom: 1em; font-size: 1em; co
   float: right;
   width: 25%;
   height: 181.75vh;
-  background-color: red;
+  background-color: 8a8a8a;
 
 }
 
@@ -149,3 +149,157 @@ label[for="file-input"] { display: block; margin-bottom: 1em; font-size: 1em; co
   height: 50px !important;
   border-radius: 50%;
 }
+
+body{
+	background-color: "#191A1C";
+}
+
+.navbar{
+	width: 100% !important;
+}
+
+#nav-mobile{
+	display: flex !important;
+	font-size: 3vh !important;
+}
+
+.delete-icon{
+	float: right;
+	
+	z-index: 999;
+}
+
+.navbar-h6{
+	float: left !important;
+}
+
+.signout-h6{
+	color: white !important;
+}
+
+nav .brand-logo{
+	left: 0 !important;
+	float: left !important;
+}
+
+.brand-logo{
+	color: black !important;
+	font-family: 'Grand Hotel', cursive;
+	
+	left: 0 !important;
+	/*float: left !important;*/
+	
+}
+
+
+.navbar-li{
+	color: black !important;
+}
+
+.navbar-li{
+	color: black !important;
+}
+
+.card{
+	max-width: 425px;
+}
+
+.auth-card{
+	padding: 20px;
+	text-align: center;
+	max-width: 400px;
+	margin: 10px auto;
+}
+
+.btn{
+	color: white !important;
+	background-color: black !important;
+}
+
+input{
+  color: white;
+
+}
+
+.input-field input[type=text]:focus {
+   border-bottom: 1px solid black !important;
+	box-shadow: 0 1px 0 0 black !important;
+}
+
+.gallery{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.item{
+	width: 30%;
+	margin: 1.5%;
+}
+
+.home-card{
+	max-width: '500px';
+	height: max-content;
+}
+
+.events{
+	float: left;
+	margin: -3px;
+}
+
+.username{
+	font-size: 97.5%;
+	margin: 2.5%;
+	
+	z-index: 999;
+}
+
+.menu{
+	position: fixed;
+	z-index: 9999999;
+	width: 100%;
+}
+
+.HamburgerMenu{
+	position: fixed;
+	z-index: 9999999;
+	bottom: 90%;
+	
+}
+
+.AppBarPhone{
+	background-color: #e5e5e5;
+	width: 100%;
+	height: 10vh;
+	position: fixed;
+	bottom: 90%;
+	z-index: 999999;
+	
+}
+
+.appbarlogo{
+	position: fixed;
+	bottom: 88%;
+	right: 0%;
+	font-size: 5vh;
+}
+
+.app{
+	position: absolute;
+	top: 12.5%;
+	
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+
+.delete-user{
+	background-color: red !important;
+}
+
+.pointer{
+	cursor: pointer;
+}
+

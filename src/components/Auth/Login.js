@@ -5,9 +5,9 @@ import '../../App.css';
 import axios from 'axios';
 
 function Register() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");;;
-
+    var [email, setEmail] = useState("");
+    var [password, setPassword] = useState("");;;
+    
     const loginApi = () => {
         axios.post(`${API_URL}/login`, {email, password}, {
             headers: {
@@ -54,7 +54,8 @@ function Register() {
                                         <label for="password">Şifreniz</label>
                                     </div>
 
-                                    <button className="btn cyan" onClick={loginApi}>Giriş Yap</button>)
+                                    <button className="btn cyan" onClick={loginApi}>Giriş Yap</button>
+                            
                                 </div>
                             </div>
                         </center>

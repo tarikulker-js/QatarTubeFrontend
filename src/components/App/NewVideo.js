@@ -11,6 +11,8 @@ function NewVideo() {
     var [videoDesc, setVideoDesc] = useState("");
 
     var [videoPublic, setVideoPublic] = useState("public");
+    
+    var [videoImage, setVideoImage] = useState(null);
 
     const publicOptions = [
         { value: "public", label: 'Herkese açık. ' },
@@ -25,7 +27,8 @@ function NewVideo() {
         const video = {
             title: videoTitle,
             desc: videoDesc,
-            videoPublic
+            videoPublic,
+            videoImage
         }            
             
         axios.post(`${API_URL}/create-video`, video, {
@@ -69,6 +72,14 @@ function NewVideo() {
                             placeholder="Açıklama"
                             value={videoDesc}
                             onChange={(e) => setVideoDesc(e.target.value)}
+
+                        />
+
+                        <input 
+                            type="text"
+                            placeholder="Kapak Fotoğrafı"
+                            value={videoImage}
+                            onChange={(e) => setVideoImage(e.target.value)}
 
                         />
 

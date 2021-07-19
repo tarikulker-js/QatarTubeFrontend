@@ -1,0 +1,8 @@
+    "jquery": "^3.5.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-dist": "^1.12.1",
+    "node-sass": "^4.13.0",
+    "react-world-flags": "^1.4.0",
+    "sass-extract": "^2.1.0",
+    "sass-extract-loader": "^1.1.0",
+    "react-icons": "^4.1.0",

@@ -328,17 +328,20 @@ function VideoPage() {
                                 float: "left"
                             }}>{videoInfos.title}</h4>
 
+
                             <br /><br /><br /><br />
+                            <h6 style={{
+                                float: "left"
+                            }}>{ videoInfos.views.length } İzlenme</h6>
+
+                            <br /><br />
 
                             <h5 className="videoDesc" style={{
                                 float: "left"
                             }}>{videoInfos.desc}</h5>
 
                             <br /><br /><br /><br />
-
-
-                            {console.log("likes includes", videoInfos.likes.includes(localStorage.getItem("id")))}
-
+                            
                             {videoInfos.likes.includes(localStorage.getItem("id")) === true
                                 ? <div className="videoEvents">
                                     <div className="like">
@@ -412,13 +415,31 @@ function VideoPage() {
                                 <h4 style={{ float: "left", marginLeft: "50px", fontSize: "20px", cursor: "grab" }}>{videoInfos.likes.length} Like</h4>
                                 <h4 style={{ float: "left", marginLeft: "75px", fontSize: "20px", cursor: "grab" }}>{videoInfos.dislikes.length} Dislike</h4>
                             </div>
+                            
+                            <br /><br /><br /><br /><br />
+                            
+                            <hr />
+                            <br />
+
+                            <div className="channelInfos" style={{
+                                float: "left",
+                                width: "100%",
+                                backgroundColor: "#181a1b",
+                                heigth: "250px"
+                            }}>
+                                <h4>{videoInfos.postedBy.name}</h4>
+
+                            </div>
                         </div>
 
-                        <div className="videoComments">
-                            <Content className="videoCommentLayout" >
+
+                        {localStorage.getItem("logined") === "false" ? <h4>Like ve Dislike atmak için lütfen giriş yapınız.</h4> : ""}
+                        
+                         <div className="videoComments">
+                            <Content className="videoCommentLayout" style={{ backgroundColor: "#181a1b" }}>
                                 <Row gutter={[16, 16]} >
                                     <Col flex="5 1 400px" >
-                                        <Form layout={"vertical"} style={{ backgroundColor: 'white', height: 700, overflowY: 'scroll', padding: 50, textAlign: 'center' }} name="basic" initialValues={{ remember: true, }} className="videoCommentLayout" >
+                                        <Form layout={"vertical"} style={{ backgroundColor: '#181a1b', height: 700, overflowY: 'scroll', padding: 50, textAlign: 'center' }} name="basic" initialValues={{ remember: true, }} className="videoCommentLayout" >
 											
                                             <div style={{ display: "flex" }}><input placeholder="Bu videoyu yorumlayın. . " value={commentText} onChange={(e) => setCommentText(e.target.value)} /> <button className="btn red medium" onClick={() => addComment()} type="submit" >Yorumla</button></div>	
 											
@@ -437,9 +458,9 @@ function VideoPage() {
                                                                     </div>
                                                                     <span><p>{comment.text}</p></span>
                                                                     <div className="videoCommentEvents" style={{ display: "flex" }}>
-                                                                        {comment.likes.includes(localStorage.getItem("id")) === true ? <div><AiFillLike style={{}} onClick={() => unlikeComment(comment._id)} /> {comment.likes.length} Like</div> : <div> <AiOutlineLike style={{}} onClick={() => likeComment(comment._id)} /> {comment.likes.length} Like </div>}
+                                                                        {comment.likes.includes(localStorage.getItem("id")) === true ? <div style={{display: "flex"}}><AiFillLike style={{ color: "white"  }} onClick={() => unlikeComment(comment._id)} /> <h6 style={{ color: "white" }}>{comment.likes.length} Like</h6></div> : <div style={{ display: "flex"  }}><AiOutlineLike style={{ color: "white"  }} onClick={() => likeComment(comment._id)} /> <h6 style={{ color: "white" }}>{comment.likes.length} Like</h6> </div>}
 
-                                                                        {comment.dislikes.includes(localStorage.getItem("id")) === true ? <div><AiFillDislike style={{}} onClick={() => undislikeComment(comment._id)} /> {comment.dislikes.length} Dislike</div> : <div> <AiOutlineDislike style={{}} onClick={() => dislikeComment(comment._id)} /> {comment.dislikes.length} Dislike </div>}
+                                                                        {comment.dislikes.includes(localStorage.getItem("id")) === true ? <div  style={{ display: "flex"  }}><AiFillDislike style={{ color: "white"  }} onClick={() => undislikeComment(comment._id)} /><h6 style={{ color: "white" }}>{comment.dislikes.length} Dislike</h6></div> : <div  style={{ display: "flex"  }}><AiOutlineDislike style={{ color: "white"  }} onClick={() => dislikeComment(comment._id)} /> <h6 style={{ color: "white" }}>{comment.dislikes.length} Dislike</h6> </div>}
 
                                                                         <Popup trigger={<h6 style={{ marginLeft: "30px", fontSize: "15px", display: "flex", marginTop: "0%" }}>{comment.replys.length} Cevap</h6>} position="bottom right"> 
                                                                             <div>
