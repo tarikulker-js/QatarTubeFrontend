@@ -16,8 +16,6 @@ function Register() {
         }).then((data) => {
             console.log(data.data);
 
-            alert(data.email);
-
             localStorage.setItem("jwt", data.data.token);
             localStorage.setItem("id", data.data.user);
             localStorage.setItem("name", data.data.name);

@@ -427,7 +427,13 @@ function VideoPage() {
                                 backgroundColor: "#181a1b",
                                 heigth: "250px"
                             }}>
-                                <h4>{videoInfos.postedBy.name}</h4>
+                                <h4 style={{ float: "left" }}>{videoInfos.postedBy.name}</h4>
+
+                                { videoInfos.postedBy.mySubscribes.includes(localStorage.getItem("id")) ? 
+                                    <Button type="primary" danger style={{ float: "right", backgroundColor: "#8a8a8a", color: "white", width: "15%", height: "80%", alignItems: "" }}> Abonelikten Çık </Button>
+                                :
+                                    <Button type="primary" danger style={{ float: "right", backgroundColor: "red", color: "white", width: "15%", height: "80%", alignItems: "" }}> Abone Ol </Button>
+                                }
 
                             </div>
                         </div>
@@ -462,8 +468,8 @@ function VideoPage() {
 
                                                                         {comment.dislikes.includes(localStorage.getItem("id")) === true ? <div  style={{ display: "flex"  }}><AiFillDislike style={{ color: "white"  }} onClick={() => undislikeComment(comment._id)} /><h6 style={{ color: "white" }}>{comment.dislikes.length} Dislike</h6></div> : <div  style={{ display: "flex"  }}><AiOutlineDislike style={{ color: "white"  }} onClick={() => dislikeComment(comment._id)} /> <h6 style={{ color: "white" }}>{comment.dislikes.length} Dislike</h6> </div>}
 
-                                                                        <Popup trigger={<h6 style={{ marginLeft: "30px", fontSize: "15px", display: "flex", marginTop: "0%" }}>{comment.replys.length} Cevap</h6>} position="bottom right"> 
-                                                                            <div>
+                                                                        <Popup  style={{ backgroundColor: "#1e2122" }}  trigger={<h6 style={{ marginLeft: "30px", fontSize: "15px", display: "flex", marginTop: "0%", cursor: "pointer" }}>{comment.replys.length} Cevap</h6>} position="bottom right"> 
+                                                                            <div  style={{ backgroundColor: "#1e2122" }}>
 																				<div style={{ display: "flex" }}><input placeholder="Bu yorumu cevaplayın. " value={replyCommentText} onChange={(e) => setReplyCommentText(e.target.value)} /> <button className="btn red medium" onClick={() => replyComment(comment._id)} type="submit" >Cevapla</button></div>
 																				
                                                                                 { replyCommentsInfos ? 
@@ -479,9 +485,9 @@ function VideoPage() {
 																											</div>
 																											<span><p>{ reply.text }</p></span>
 																											<div>
-																												{reply.likes.includes(localStorage.getItem("id")) === true ? <div><AiFillLike style={{}} onClick={() => unlikeReplyComment(reply._id)} /> {reply.likes.length} Like</div> : <div> <AiOutlineLike style={{}} onClick={() => likeReplyComment(reply._id)} /> {reply.likes.length} Like </div>}
+																												{reply.likes.includes(localStorage.getItem("id")) === true ? <div><AiFillLike style={{color: "white"}} onClick={() => unlikeReplyComment(reply._id)} /> <h6>{reply.likes.length} Like</h6></div> : <div> <AiOutlineLike style={{color: "white"}} onClick={() => likeReplyComment(reply._id)} /> <h6>{reply.likes.length} Like</h6></div>}
 																												
-																												{reply.dislikes.includes(localStorage.getItem("id")) === true ? <div><AiFillDislike style={{}} onClick={() => undislikeReplyComment(reply._id)} /> {reply.dislikes.length} Dislike</div> : <div> <AiOutlineDislike style={{}} onClick={() => dislikeReplyComment(reply._id)} /> {reply.dislikes.length} Dislike </div>}
+																												{reply.dislikes.includes(localStorage.getItem("id")) === true ? <div><AiFillDislike style={{color: "white"}} onClick={() => undislikeReplyComment(reply._id)} /> <h6>{reply.dislikes.length} Dislike</h6></div> : <div> <AiOutlineDislike style={{color: "white"}} onClick={() => dislikeReplyComment(reply._id)} /> <h6>{reply.dislikes.length} Dislike</h6> </div>}
 																											</div>
 																										</div>
 																										:
