@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { API_URL } from '../../config.json';
 import M from 'materialize-css';
 import '../../App.css';
+import { Content } from '../../lib/quntu-ui-v1/quntu-ui-v1';
 import axios from 'axios';
 
 function Register() {
@@ -37,34 +38,36 @@ function Register() {
     }
     
     return (
-        <center>
-            <div className="Login">
-               { localStorage.getItem("logined") == "false" ? 
-                        <center>
-                            <div className="card">
-                                <div className="card-content">
-                                    <div className="input-field col s6">
-                                        <input id="email" type="text" className="validate" onChange={(value) => setEmail(value.target.value)} />
-                                        <label for="email">E-Mail</label>
-                                    </div>
-                                    <div className="input-field col s6">
-                                        <input id="password" type="password" className="validate" onChange={(value) => setPassword(value.target.value)} />
-                                        <label for="password">Şifreniz</label>
-                                    </div>
+		<Content>
+			<center>
+				<div className="Login">
+				   { localStorage.getItem("logined") == "false" ? 
+							<center>
+								<div className="card">
+									<div className="card-content">
+										<div className="input-field col s6">
+											<input id="email" type="text" className="validate" onChange={(value) => setEmail(value.target.value)} />
+											<label for="email">E-Mail</label>
+										</div>
+										<div className="input-field col s6">
+											<input id="password" type="password" className="validate" onChange={(value) => setPassword(value.target.value)} />
+											<label for="password">Şifreniz</label>
+										</div>
 
-                                    <button className="btn cyan" onClick={loginApi}>Giriş Yap</button>
-                            
-                                </div>
-                            </div>
-                        </center>
-                    :
-                    <div>
-                        <h5>Zaten giriş yaptınız. </h5>
-                        {window.location="/"}
-                    </div>    
-                }
-            </div>
-        </center>
+										<button className="btn cyan" onClick={loginApi}>Giriş Yap</button>
+
+									</div>
+								</div>
+							</center>
+						:
+						<div>
+							<h5>Zaten giriş yaptınız. </h5>
+							{window.location="/"}
+						</div>    
+					}
+				</div>
+			</center>
+		</Content>
     )
 }
 

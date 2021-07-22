@@ -5,7 +5,7 @@ import $ from 'jquery';
 import 'jquery-ui/ui/effect';
 
 import Flag from 'react-world-flags'
-/*var style = */require("./components.scss");
+require("./components.scss");
 
 
 /* QUNTU WORKS 2020 UI LIBRARY */
@@ -222,18 +222,17 @@ function ToolTip(element,text){
 }
 
 function RegisterPanel (props) {
-
     return(
         <div className="registerPanel">
             <div className="formDiv">
-                <form id="registerForm">
+                <div id="registerForm">
                     {
                         props.children
                     }
-                </form>
+                </div>
             </div>
             {
-                    props.imageUrl ? <div className="imageDiv" style={{background:`url(${props.imageUrl})`}}><div className="textContain"><h2 style={{ color: "black" }}>{props.imageHeaderText}</h2><p style={{ color: "black" }}>{props.imageContentText}</p></div></div> : <></>
+                    props.imageUrl ? <div className="imageDiv" style={{background:`url(${props.imageUrl})`}}><div className="textContain"><h2 style={{ color: "white" }}>{props.imageHeaderText}</h2><p style={{ color: "white" }}>{props.imageContentText}</p></div></div> : <></>
             }
             {
                     props.videoUrl ? <div className="videoDiv"><video src={props.imageUrl}/></div> : <></>

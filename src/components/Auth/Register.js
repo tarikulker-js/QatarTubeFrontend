@@ -4,6 +4,7 @@ import M from 'materialize-css';
 import { API_URL, UPLOAD_IMG_URL } from '../../config';
 import { GoogleLogin } from 'react-google-login';
 import axios from 'axios';
+import { Content, RegisterPanel } from '../../lib/quntu-ui-v1/quntu-ui-v1';
 import '../../App.css';
 
 export default function SignIn() {
@@ -101,78 +102,79 @@ export default function SignIn() {
     }
 
     return (
-        <center>
-            <div className="Register">
-                {
-                    localStorage.getItem("logined") == "false" ?     
-                        <div className="card auth-card input-field" >
-                            <h2 style={{ fontSize: '30px' }}>Qatar Tube</h2>
+        <Content>
+			<center>
+				<div className="Register">
+					{
+						localStorage.getItem("logined") == "false" ?     
+							<div className="card auth-card input-field" >
+								<h2 style={{ fontSize: '30px' }}>Qatar Tube</h2>
 
-                            <input
-                                type="text"
-                                placeholder="Adınız"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
+								<input
+									type="text"
+									placeholder="Adınız"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+								/>
 
-                            <input
-                                type="text"
-                                placeholder="Kullanıcı Adınız"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
+								<input
+									type="text"
+									placeholder="Kullanıcı Adınız"
+									value={username}
+									onChange={(e) => setUsername(e.target.value)}
+								/>
 
-                            <input
-                                type="text"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
+								<input
+									type="text"
+									placeholder="Email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+								/>
 
-                            <input
-                                type="password"
-                                placeholder="Şifreniz"
-                                value={password}
-                                onChange={(e) => setPasword(e.target.value)}
-                            />
+								<input
+									type="password"
+									placeholder="Şifreniz"
+									value={password}
+									onChange={(e) => setPasword(e.target.value)}
+								/>
 
-                            <div className="file-field input-field">
-                                <div className="btn waves-effect waves-dark cyan">
-                                    Profil Resminiz:
+								<div className="file-field input-field">
+									<div className="btn waves-effect waves-dark cyan">
+										Profil Resminiz:
 
-                                    <input
-                                        type="file"
-                                        onChange={(e) => setImage(e.target.files[0])}
-                                        placeholder="Profil Resmi"
-                                    />
-                                </div>
-                                <div className="file-path-wrapper">
-                                    <input className="file-path validate" type="text" />
-                                </div>
-                            </div>
+										<input
+											type="file"
+											onChange={(e) => setImage(e.target.files[0])}
+											placeholder="Profil Resmi"
+										/>
+									</div>
+									<div className="file-path-wrapper">
+										<input className="file-path validate" type="text" />
+									</div>
+								</div>
 
-                            <button className="btn waves-effect waves-dark cyan"
-                                onClick={() => PostData()}
-                            >
+								<button className="btn waves-effect waves-dark cyan"
+									onClick={() => PostData()}
+								>
 
-                                Kayıt Ol
+									Kayıt Ol
 
-                            </button>
+								</button>
 
-                            <h5>Zaten bir hesabınız var mı? <Link to='/login'>Giriş Yapın!</Link></h5>
-                            <br /><br/>
-                        </div>
-                    :
-                        <center>
-                            <div>
-                                <h5>Zaten kaydoldunuz ve giriş yaptınız. </h5>
-                                {window.location="/"}
-                            </div>
-                        </center>    
-                }
-            </div>
-        </center>
-
+								<h5>Zaten bir hesabınız var mı? <Link to='/login'>Giriş Yapın!</Link></h5>
+								<br /><br/>
+							</div>
+						:
+							<center>
+								<div>
+									<h5>Zaten kaydoldunuz ve giriş yaptınız. </h5>
+									{window.location="/"}
+								</div>
+							</center>    
+					}
+				</div>
+			</center>
+		</Content>
     )
 
 }

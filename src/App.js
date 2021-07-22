@@ -10,13 +10,17 @@ import { API_URL, logo } from './config.json';
 import Home from './components/App/Home';
 import NewVideo from './components/App/NewVideo';
 import VideoPage from './components/App/Video';
+import SubscriberVideos from './components/App/subscriberVideos';
+
+import CreatePlaylist from './components/App/CreatePlaylist';
+import Playlist from './components/App/Playlist';
 
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 
 //Navbar
 import Navbar from './components/Menu/Navbar';
-
+ 
 function App() {
 
   useEffect(() => {
@@ -56,12 +60,13 @@ function App() {
                 <br />
                 <button style={{ width: "100%" }}  onClick={() => window.location="/channel"}><a href="/">Kanalım</a></button>
                 <br />
-                <button style={{ width: "100%" }}  onClick={() => window.location="/subvideos"}><a href="/">Abonelikler</a></button>
+				<button style={{ width: "100%" }} onClick={() => window.location="/subscribervideos"}><a href="/subscribervideos">Abonelikler</a></button>
+                <br />
+				<button style={{ width: "100%" }} onClick={() => window.location="/playlist/create"}><a href="/playlist/create">Playlist Oluştur</a></button>
                 <br />
                 <button style={{ width: "100%" }}  onClick={() => window.location="/trends"}><a href="/">Trendler</a></button>
                 <br />
                 <button style={{ width: "100%" }}  onClick={() => window.location="/logout"}><a href="/">Çıkış Yap</a></button>
-                <br />
 
               </center>
               :
@@ -81,6 +86,15 @@ function App() {
       </Header>
 
       <Switch>
+		<Route path="/playlist/view/:playlistId">
+			<Playlist />
+		</Route>
+		<Route path="/playlist/create">
+			<CreatePlaylist /> 
+		</Route>
+		<Route path="/subscribervideos">
+		  <SubscriberVideos />
+		</Route>
         <Route path="/watch/:videoId">
           <VideoPage />
         </Route>

@@ -130,8 +130,7 @@ export default class VideoPlayer extends Component {
           <source src={this.props.videoURL} />
 
           <ControlBar autoHide={false} >
-  
-            <PlaybackRateMenuButton rates={[5, 2, 1, 0.5, 0.1]} order={7.1} />
+            <PlaybackRateMenuButton rates={[5, 2.5, 1.5, 1, 0.5, 0.25, 0.1]} order={7.1} />
           </ControlBar>
         </Player>
         

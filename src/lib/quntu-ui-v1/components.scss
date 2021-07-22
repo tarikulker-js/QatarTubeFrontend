@@ -474,6 +474,7 @@ button:hover{
     background: transparent !important;
     color : $primaryButtonColor !important;
 }
+
 .Content{
     &>*:nth-of-type(2n+2){
         background:$primaryButtonColor;
@@ -674,7 +675,6 @@ button:hover{
             }
             &>button{
                 height: 50px;
-                
                 color: white;
             }
             &>input{

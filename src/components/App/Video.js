@@ -8,7 +8,6 @@ import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'; //unlike \ und
 import { AiFillLike, AiFillDislike } from 'react-icons/ai'; //liked | undisliked
 import Popup from 'reactjs-popup'; 
 import 'reactjs-popup/dist/index.css';
-//https://qatar-tube.run-eu-central1.goorm.io/watch/60ec0457b772bf16eaec65d0
 
 import VideoPlayer from '../VideoPlayer';
 import { API_URL } from '../../config.json';
@@ -17,7 +16,6 @@ import '../../App.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
-
 
 function VideoPage() {
     var { videoId } = useParams();
@@ -33,8 +31,8 @@ function VideoPage() {
 
     const playbackSpeedOptions = [
         { value: Number(-0.25), label: '0.25' },
-        { value: Number(-0.50), label: '0.50' },
-        { value: Number(-0.75), label: '0.75' },
+        { value: Number(-0.50), label: '0.50' },
+        { value: Number(-0.75), label: '0.75' },
         { value: Number(0), label: '1.0' },
         { value: Number(0.25), label: '1.25' },
         { value: Number(0.50), label: '1.50' },
@@ -44,6 +42,9 @@ function VideoPage() {
     ];
 
     function updateVideoInfos() {
+		M.toast({message: "VideoInfos Updating... "});
+		alert("update");
+		
         axios.post(`${API_URL}/video/${videoId}`, { video: videoId }, {
             headers: {
                 "Content-Type": "application/json",
@@ -310,7 +311,12 @@ function VideoPage() {
 		
 		
 	}
-
+	
+	function unSubcribeChannel(){
+		alert("abonelikten çık. ");
+		
+	}
+	
     return (
 
         <center>
@@ -429,10 +435,38 @@ function VideoPage() {
                             }}>
                                 <h4 style={{ float: "left" }}>{videoInfos.postedBy.name}</h4>
 
-                                { videoInfos.postedBy.mySubscribes.includes(localStorage.getItem("id")) ? 
-                                    <Button type="primary" danger style={{ float: "right", backgroundColor: "#8a8a8a", color: "white", width: "15%", height: "80%", alignItems: "" }}> Abonelikten Çık </Button>
+                                { videoInfos.postedBy.subscribes.includes(localStorage.getItem("id")) === true ? 
+                                    <Button type="primary" danger style={{ float: "right", backgroundColor: "#8a8a8a", color: "white", width: "15%", height: "80%", alignItems: "center" }} onClick={() => {
+		alert("abonelikten çık. ");
+		
+		axios.post(`${API_URL}/unsubscribe`, { userId: videoInfos.postedBy._id }, {
+			headers: {
+				"Authorization": "Bearer " + localStorage.getItem("jwt")
+			}
+		})
+		.then((unsubscribed) => {
+			alert("message: " + unsubscribed.data.message);
+			updateVideoInfos();
+			
+		})
+		
+	}}> Abonelikten Çık </Button>
                                 :
-                                    <Button type="primary" danger style={{ float: "right", backgroundColor: "red", color: "white", width: "15%", height: "80%", alignItems: "" }}> Abone Ol </Button>
+                                    <Button type="primary" danger style={{ float: "right", backgroundColor: "red", color: "white", width: "15%", height: "80%", alignItems: "center" }} onClick={() => {
+		alert("abone ol. ");
+		
+		axios.post(`${API_URL}/subscribe`, { userId: videoInfos.postedBy._id }, {
+			headers: {
+				"Authorization": "Bearer " + localStorage.getItem("jwt")
+			}
+		})
+		.then((subscribed) => {
+			alert("message: " + subscribed.data.message);
+			updateVideoInfos();
+			
+		})
+		
+	}} > Abone Ol </Button>
                                 }
 
                             </div>
@@ -440,7 +474,7 @@ function VideoPage() {
 
 
                         {localStorage.getItem("logined") === "false" ? <h4>Like ve Dislike atmak için lütfen giriş yapınız.</h4> : ""}
-                        
+
                          <div className="videoComments">
                             <Content className="videoCommentLayout" style={{ backgroundColor: "#181a1b" }}>
                                 <Row gutter={[16, 16]} >
