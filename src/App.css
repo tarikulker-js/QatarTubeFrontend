@@ -336,4 +336,11 @@ input{
 	background-position: center;
 }
 
+.eventVideoOnPlaylist:hover{
+	background-color: white;
+	width: 45px;
+	height: 45px;
+	cursor: copy;
+	
+}
 

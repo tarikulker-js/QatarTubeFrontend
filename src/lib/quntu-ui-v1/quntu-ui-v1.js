@@ -125,6 +125,27 @@ function Content(props) {
     }
 
 }
+function QuntuContent(props) {
+
+    if(props.verticalAlignContent){
+        return(
+            <div className="Content verticalAlignContent">
+            {
+                Object.values(props).map((e) => e)
+            }
+            </div>
+        );
+    }else {
+        return(
+            <div className="Content">
+            {
+                Object.values(props).map((e) => e)
+            }
+            </div>
+        );
+    }
+
+}
 function Footer(props) {
     return(
     <div className="Footer">
@@ -297,6 +318,7 @@ export {
     HeaderRight,
     HeaderCenter,
     Content,
+	QuntuContent,
     Toggle,
     GraphicCardItem,
     PhoneNumber,
