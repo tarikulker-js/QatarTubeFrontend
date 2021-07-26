@@ -42,9 +42,6 @@ function VideoPage() {
     ];
 
     function updateVideoInfos() {
-		M.toast({message: "VideoInfos Updating... "});
-		alert("update");
-		
         axios.post(`${API_URL}/video/${videoId}`, { video: videoId }, {
             headers: {
                 "Content-Type": "application/json",

@@ -31,6 +31,8 @@ function VideoPage() {
     var [currentTime, setCurrentTime] = useState();
     var [playbackSpeed, setPlaybackSpeed] = useState();
 
+	var [addedVideoId, setAddedVideoId] = useState(null);
+
     function updatePlaylistInfos() {
 		//alert("update");
         axios.post(`${API_URL}/playlist/view/${playlistId}`, { video: playlistId }, {
@@ -169,6 +171,23 @@ function VideoPage() {
 		})
 	}
 	
+	function addVideo(){
+		alert("Playlist ID: " + playlistId + " Video ID: " + addedVideoId);
+
+		axios.post(`${API_URL}/playlist/add-video`, { playlistId: playlistId, videoId: addedVideoId }, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        }).then((result) => {
+			alert(result.data.message);
+			M.toast({ html: result.data.message });
+
+		})
+
+		updatePlaylistInfos();
+		
+	}
+
     return (
 
         <center>
@@ -194,51 +213,14 @@ function VideoPage() {
 												playlistInfos.admins.includes(localStorage.getItem("id")) === true
 													?
 												<Popup
-													trigger={<button className="button"> Open </button>}
+													trigger={<button className=""> Video Ekleyin </button>}
 													modal
 													nested
 												>
-													{close => (
-													  <div className="modal">
-														<button className="close" onClick={close}>
-														  &times;
-														</button>
-														<div className="header"> Modal Title </div>
-														<div className="content">
-														  {' '}
-														  Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-														  Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-														  delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-														  <br />
-														  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-														  commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-														  explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-														</div>
-														<div className="actions">
-														  <Popup
-															trigger={<button className="button"> Trigger </button>}
-															position="top center"
-															nested
-														  >
-															<span>
-															  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-															  magni omnis delectus nemo, maxime molestiae dolorem numquam
-															  mollitia, voluptate ea, accusamus excepturi deleniti ratione
-															  sapiente! Laudantium, aperiam doloribus. Odit, aut.
-															</span>
-														  </Popup>
-														  <button
-															className="button"
-															onClick={() => {
-															  console.log('modal closed ');
-															  close();
-															}}
-														  >
-															close modal
-														  </button>
-														</div>
-													  </div>
-													)}
+													<div style={{ backgroundColor: "#181a1b" }}>
+														<input placeholder="Video ID'yi giriniz" style={{ color: "white", width: "80%" }} onChange={(e) => setAddedVideoId(e.target.value)}  />
+														<button style={{ color: "white", width: "20%" }}  onClick={addVideo}>Ekle</button>
+													</div>
 												</Popup>
 													:
 												<></>
