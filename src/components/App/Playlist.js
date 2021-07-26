@@ -32,8 +32,6 @@ function VideoPage() {
     var [playbackSpeed, setPlaybackSpeed] = useState();
 
     function updatePlaylistInfos() {
-		M.toast({html: "PlaylistInfos Updating... ", class: "yellow"});
-		
 		//alert("update");
         axios.post(`${API_URL}/playlist/view/${playlistId}`, { video: playlistId }, {
             headers: {
@@ -41,8 +39,6 @@ function VideoPage() {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
         }).then((res) => {
-			M.toast({html: res.data.message, classes: "green"});
-			
         	setPlaylistInfos(res.data.playlist);
 			
         })
@@ -137,7 +133,7 @@ function VideoPage() {
             if (!res.data.message) {
 
             } else {
-                alert("Video zaten beğenildi. ");
+                //alert("Video zaten beğenildi. ");
 
             }
         })
@@ -145,16 +141,32 @@ function VideoPage() {
     }
 	
 	function addFavPlaylist() {
-		axios.post(`${API_URL}/undislike`, {  }, {
+		//alert("likeing... ");
+		
+		axios.put(`${API_URL}/playlist/like/${playlistId}`, {  }, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
         })
+		.then((likedPlaylist) => {
+			updatePlaylistInfos();
+			
+		})
+		
 	}
 	
 	function takeoutFavPlaylist() {
-		
+		axios.put(`${API_URL}/playlist/unlike/${playlistId}`, {  }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+		.then((likedPlaylist) => {
+			updatePlaylistInfos();
+			
+		})
 	}
 	
     return (
@@ -173,10 +185,65 @@ function VideoPage() {
 											{
 												playlistInfos.likes.includes(localStorage.getItem("id")) === false
 													?
-												<FcLike style={{ width: "35px", height: "35px", float: "left", marginLeft: "55px", cursor: "pointer" }} />
+												<FcLike style={{ width: "35px", height: "35px", float: "left", marginLeft: "55px", cursor: "pointer" }} onClick={addFavPlaylist} />
 													:
-												<FcDislike style={{ width: "35px", height: "35px", float: "left", marginLeft: "55px", cursor: "pointer" }} />
+												<FcDislike style={{ width: "35px", height: "35px", float: "left", marginLeft: "55px", cursor: "pointer" }} onClick={takeoutFavPlaylist} />
 											}
+											
+											{
+												playlistInfos.admins.includes(localStorage.getItem("id")) === true
+													?
+												<Popup
+													trigger={<button className="button"> Open </button>}
+													modal
+													nested
+												>
+													{close => (
+													  <div className="modal">
+														<button className="close" onClick={close}>
+														  &times;
+														</button>
+														<div className="header"> Modal Title </div>
+														<div className="content">
+														  {' '}
+														  Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
+														  Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
+														  delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
+														  <br />
+														  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
+														  commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
+														  explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
+														</div>
+														<div className="actions">
+														  <Popup
+															trigger={<button className="button"> Trigger </button>}
+															position="top center"
+															nested
+														  >
+															<span>
+															  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
+															  magni omnis delectus nemo, maxime molestiae dolorem numquam
+															  mollitia, voluptate ea, accusamus excepturi deleniti ratione
+															  sapiente! Laudantium, aperiam doloribus. Odit, aut.
+															</span>
+														  </Popup>
+														  <button
+															className="button"
+															onClick={() => {
+															  console.log('modal closed ');
+															  close();
+															}}
+														  >
+															close modal
+														  </button>
+														</div>
+													  </div>
+													)}
+												</Popup>
+													:
+												<></>
+											}
+											
 										</div>
 								</Content>
 								
