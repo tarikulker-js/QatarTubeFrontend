@@ -7,6 +7,7 @@ import { Layout, Form, Input, Slider, Row, Col, Image, Typography, Radio, Divide
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'; //unlike \ undislike
 import { AiFillLike, AiFillDislike } from 'react-icons/ai'; //liked | undisliked
 import { FcLike, FcDislike } from 'react-icons/fc'; //add fav / takeout fav
+import { MdRemoveCircle } from 'react-icons/md';
 import Popup from 'reactjs-popup'; 
 import 'reactjs-popup/dist/index.css';
 import { QuntuContent } from '../../lib/quntu-ui-v1/quntu-ui-v1';
@@ -19,7 +20,7 @@ import '../../App.css';
 const { Content } = Layout;
 const { Title, Text } = Typography;
 
-function VideoPage() {
+function PlaylistPage() {
     var { playlistId } = useParams();
     var [playlistInfos, setPlaylistInfos] = useState(null);
     var [commentsInfos, setCommentsInfos] = useState(null);
@@ -32,10 +33,16 @@ function VideoPage() {
     var [playbackSpeed, setPlaybackSpeed] = useState();
 
 	var [addedVideoId, setAddedVideoId] = useState(null);
+	var [addedViewUserEmail, setAddedViewUserEmail] = useState(null);
+	var [takeoutedViewUserEmail, setTakeoutedViewUserEmail] = useState(null);
+	var [addedAdminUserEmail, setAddedAdminUserEmail] = useState(null);
+	var [takeoutedAdminUserEmail, setTakeoutedAdminUserEmail] = useState(null);
+	
 
     function updatePlaylistInfos() {
 		//alert("update");
-        axios.post(`${API_URL}/playlist/view/${playlistId}`, { video: playlistId }, {
+        
+		axios.post(`${API_URL}/playlist/view/${playlistId}`, { video: playlistId }, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
@@ -63,7 +70,6 @@ function VideoPage() {
         }).then((res) => {
             updatePlaylistInfos();
 
-            console.log(res);
             //alert("liked.");
 
             if (!res.data.message) {
@@ -86,8 +92,6 @@ function VideoPage() {
         }).then((res) => {
             updatePlaylistInfos();
 
-            console.log(res);
-
             if (!res.data.message) {
 
             } else {
@@ -107,7 +111,6 @@ function VideoPage() {
         }).then((res) => {
             updatePlaylistInfos();
 
-            console.log(res);
             //alert("disliked.")
 
             if (!res.data.message) {
@@ -129,8 +132,6 @@ function VideoPage() {
             updatePlaylistInfos();
 
             //alert("undisliked. ");
-
-            console.log(res);
 
             if (!res.data.message) {
 
@@ -172,20 +173,87 @@ function VideoPage() {
 	}
 	
 	function addVideo(){
-		alert("Playlist ID: " + playlistId + " Video ID: " + addedVideoId);
+		//alert("Playlist ID: " + playlistId + " Video ID: " + addedVideoId);
 
 		axios.post(`${API_URL}/playlist/add-video`, { playlistId: playlistId, videoId: addedVideoId }, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
             }
         }).then((result) => {
+			//alert(result.data.message);
+			M.toast({ html: result.data.message });
+			
+			updatePlaylistInfos();
+		})
+	}
+	
+	function takeoutVideo(videoId){
+		//alert("Playlist ID: " + playlistId + " Video ID: " + videoId);
+
+		axios.post(`${API_URL}/playlist/takeout-video`, { playlistId: playlistId, videoId: videoId }, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        }).then((result) => {
+			//alert(result.data.message);
+			M.toast({ html: result.data.message });
+			
+			updatePlaylistInfos();
+		})
+	}
+	
+	function addViewUser(){
+		//alert("Playlist ID: " + playlistId + " Video ID: " + videoId);
+
+		axios.post(`${API_URL}/playlist/add-view`, { playlistId: playlistId, userEmail: addedViewUserEmail }, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        }).then((result) => {
 			alert(result.data.message);
 			M.toast({ html: result.data.message });
-
+			
+			updatePlaylistInfos();
 		})
-
-		updatePlaylistInfos();
-		
+	}
+	
+	function takeoutViewUser(){
+		axios.post(`${API_URL}/playlist/takeout-view`, { playlistId: playlistId, userEmail: takeoutedViewUserEmail }, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        }).then((result) => {
+			alert(result.data.message);
+			M.toast({ html: result.data.message });
+			
+			updatePlaylistInfos();
+		})
+	}
+	
+	function addAdminUser(){
+		axios.post(`${API_URL}/playlist/add-admin`, { playlistId: playlistId, userEmail: addedAdminUserEmail }, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        }).then((result) => {
+			alert(result.data.message);
+			M.toast({ html: result.data.message });
+			
+			updatePlaylistInfos();
+		})
+	}
+	
+	function takeoutAdminUser(){
+		axios.post(`${API_URL}/playlist/takeout-admin`, { playlistId: playlistId, userEmail: takeoutedAdminUserEmail }, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        }).then((result) => {
+			alert(result.data.message);
+			M.toast({ html: result.data.message });
+			
+			updatePlaylistInfos();
+		})
 	}
 
     return (
@@ -198,33 +266,94 @@ function VideoPage() {
 							<>
 								<Content className="" style={{ backgroundColor: "#181a1b", float: "left" }}>
 										<div style={{ float: "left" }} >
-											<h4 style={{ float: "left", marginLeft: "15px", cursor: "default" }}>{ playlistInfos.name }</h4><br />
-											<h5 style={{ float: "left", marginLeft: "30px", cursor: "default" }}>Oynatma Lisesinin Sahibi: { playlistInfos.author.name }</h5><br />
+											<div style={{ display: "flex" }}>
+												<h4 style={{ float: "left", marginLeft: "15px", cursor: "default" }}>{ playlistInfos.name }</h4>
+											</div>
+											<br />
+											<div style={{ display: "flex" }}>
+												<h5 style={{ float: "left", marginLeft: "30px", marginTop: "12.5", cursor: "default" }}>Oynatma Lisesinin Sahibi: { playlistInfos.author.name }</h5>
+											</div>
+											<br />
+											<div style={{display: "flex", marginLeft: "45px"}}>
+												{
+													playlistInfos.likes.includes(localStorage.getItem("id")) === false
+														?
+													<FcLike style={{ width: "35px", height: "35px", float: "left", marginRight: "15px", cursor: "pointer" }} onClick={addFavPlaylist} />
+														:
+													<FcDislike style={{ width: "35px", height: "35px", float: "left", marginRight: "15px", cursor: "pointer" }} onClick={takeoutFavPlaylist} />
+												}
 
-											{
-												playlistInfos.likes.includes(localStorage.getItem("id")) === false
-													?
-												<FcLike style={{ width: "35px", height: "35px", float: "left", marginLeft: "55px", cursor: "pointer" }} onClick={addFavPlaylist} />
-													:
-												<FcDislike style={{ width: "35px", height: "35px", float: "left", marginLeft: "55px", cursor: "pointer" }} onClick={takeoutFavPlaylist} />
-											}
-											
-											{
-												playlistInfos.admins.includes(localStorage.getItem("id")) === true
-													?
-												<Popup
-													trigger={<button className=""> Video Ekleyin </button>}
-													modal
-													nested
-												>
-													<div style={{ backgroundColor: "#181a1b" }}>
-														<input placeholder="Video ID'yi giriniz" style={{ color: "white", width: "80%" }} onChange={(e) => setAddedVideoId(e.target.value)}  />
-														<button style={{ color: "white", width: "20%" }}  onClick={addVideo}>Ekle</button>
-													</div>
-												</Popup>
-													:
-												<></>
-											}
+												{
+													playlistInfos.admins.includes(localStorage.getItem("id")) === true
+														?
+													<Popup
+														trigger={<button className="" style={{marginRight: "30px", marginTop: "11.5px", cursor: "pointer"}}> Video Ekleyin </button>}
+														modal
+														nested
+													>
+														<div style={{ backgroundColor: "#181a1b" }}>
+															<input placeholder="Video ID'yi giriniz" style={{ color: "white", width: "80%" }} onChange={(e) => setAddedVideoId(e.target.value)}  />
+															<button style={{ color: "white", width: "20%" }}  onClick={addVideo}>Ekle</button>
+														</div>
+													</Popup>
+														:
+													<></>
+												}
+
+												{
+													playlistInfos.admins.includes(localStorage.getItem("id")) === true
+														?
+													<Popup
+														trigger={<button className="" style={{marginRight: "30px", marginTop: "11.5px", cursor: "pointer"}}> Okuma Yetkisi </button>}
+														modal
+														nested
+														style={{ backgroundColor: "red" }}
+													>
+														<>
+															<div style={{ backgroundColor: "#181a1b" }}>
+															<center><h5>Okuma yetkisini vermek için: </h5></center>
+																<input placeholder="Kullanıcı Email'i giriniz" style={{ color: "white", width: "80%" }} onChange={(e) => setAddedViewUserEmail(e.target.value)}  />
+																<button style={{ color: "white", width: "20%" }}  onClick={addViewUser}>Ekle</button>
+															</div>
+															<div style={{ backgroundColor: "#181a1b" }}>
+																<center><h5>Okuma yetkisini kaldırmak için: </h5></center>
+																<input placeholder="Kullanıcı Email'i giriniz" style={{ color: "white", width: "80%" }} onChange={(e) => setTakeoutedViewUserEmail(e.target.value)}  />
+																<button style={{ color: "white", width: "20%" }}  onClick={takeoutViewUser}>Kaldır</button>
+															</div>
+															
+														</>
+													</Popup>
+														:
+													<></>
+												}
+												
+												{
+													playlistInfos.admins.includes(localStorage.getItem("id")) === true
+														?
+													<Popup
+														trigger={<button className="" style={{marginRight: "30px", marginTop: "11.5px", cursor: "pointer"}}> Yönetici Yetkisi </button>}
+														modal
+														nested
+														style={{ backgroundColor: "red" }}
+													>
+														<>
+															<div style={{ backgroundColor: "#181a1b" }}>
+															<center><h5>Yönetici yetkisini vermek için: </h5></center>
+																<input placeholder="Kullanıcı Email'i giriniz" style={{ color: "white", width: "80%" }} onChange={(e) => setAddedAdminUserEmail(e.target.value)}  />
+																<button style={{ color: "white", width: "20%" }}  onClick={addAdminUser}>Ekle</button>
+															</div>
+															<div style={{ backgroundColor: "#181a1b" }}>
+																<center><h5>Yönetici yetkisini kaldırmak için: </h5></center>
+																<input placeholder="Kullanıcı Email'i giriniz" style={{ color: "white", width: "80%" }} onChange={(e) => setTakeoutedAdminUserEmail(e.target.value)}  />
+																<button style={{ color: "white", width: "20%" }}  onClick={takeoutAdminUser}>Kaldır</button>
+															</div>
+															
+														</>
+													</Popup>
+														:
+													<></>
+												}
+											</div>
 											
 										</div>
 								</Content>
@@ -246,6 +375,8 @@ function VideoPage() {
 																					<img src={ video.videoImageURL } style={{ height: "100%", float: "left" }} />
 																					<h4 style={{ height: "45%", marginLeft: "15px", float: "left" }}>{ video.title }</h4>
 																				</div>
+																				
+																				{playlistInfos.admins.includes(localStorage.getItem("id")) === true ? <MdRemoveCircle style={{ width: "40px", height: "40px", float: "right", marginLeft: "25px", marginRight: "10px", color: "#d30808", cursor: "pointer" }} onClick={() => takeoutVideo(video._id)}/> : <></>}
 																				
 																				{video.likes.includes(localStorage.getItem("id")) === true
 																					? <div className="videoEvents">
@@ -278,7 +409,6 @@ function VideoPage() {
 																								:
 
 																								<AiFillDislike 
-																									onClick={() => { alert("ayn kardeşim aras kargo aç kapıyı amq") }} 
 																									className="eventVideoOnPlaylist"
 																									style={{
 																										float: "right",
@@ -351,4 +481,4 @@ function VideoPage() {
     )
 }
 
-export default VideoPage;
+export default PlaylistPage;
