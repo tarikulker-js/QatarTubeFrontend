@@ -11,15 +11,15 @@ import Home from './components/App/Home';
 import NewVideo from './components/App/NewVideo';
 import VideoPage from './components/App/Video';
 import SubscriberVideos from './components/App/subscriberVideos';
+import MyChannel from './components/App/MyChannel';
+import Trends from './components/App/Trends';
 
 import CreatePlaylist from './components/App/CreatePlaylist';
 import Playlist from './components/App/Playlist';
+import MyPlaylists from './components/App/MyPlaylists';
 
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-
-//Navbar
-import Navbar from './components/Menu/Navbar';
  
 function App() {
 
@@ -57,15 +57,17 @@ function App() {
 
               <center>
                 <button style={{ width: "100%" }}  onClick={() => window.location="/"}><a href="/">Ana Sayfa</a></button>
-                <br />
-                <button style={{ width: "100%" }}  onClick={() => window.location="/channel"}><a href="/">Kanalım</a></button>
-                <br />
-				<button style={{ width: "100%" }} onClick={() => window.location="/subscribervideos"}><a href="/subscribervideos">Abonelikler</a></button>
-                <br />
-				<button style={{ width: "100%" }} onClick={() => window.location="/playlist/create"}><a href="/playlist/create">Playlist Oluştur</a></button>
-                <br />
+                  <br />
+                <button style={{ width: "100%" }}  onClick={() => window.location="/channel/@me"}><a href="/">Kanalım</a></button>
+                 <br />
+				        <button style={{ width: "100%" }} onClick={() => window.location="/subscribervideos"}><a href="/subscribervideos">Abonelikler</a></button>
+                 <br />
+				        <button style={{ width: "100%" }} onClick={() => window.location="/playlist/create"}><a href="/playlist/create">Oynatma Listesi Oluştur</a></button>
+                  <br />
+                <button style={{ width: "100%" }} onClick={() => window.location="/playlist/@me/all"}><a href="/playlist/create">Oynatma Listelerim</a></button>
+                  <br />
                 <button style={{ width: "100%" }}  onClick={() => window.location="/trends"}><a href="/">Trendler</a></button>
-                <br />
+                  <br />
                 <button style={{ width: "100%" }}  onClick={() => window.location="/logout"}><a href="/">Çıkış Yap</a></button>
 
               </center>
@@ -86,38 +88,47 @@ function App() {
       </Header>
 
       <Switch>
-		<Route path="/playlist/view/:playlistId">
-			<Playlist />
-		</Route>
-		<Route path="/playlist/create">
-			<CreatePlaylist /> 
-		</Route>
-		<Route path="/subscribervideos">
-		  <SubscriberVideos />
-		</Route>
-        <Route path="/watch/:videoId">
+        <Route exact path="/trends">
+          <Trends />
+        </Route>
+        <Route exact path="/channel/@me">
+          <MyChannel />
+        </Route>
+        <Route exact path="/playlist/@me/all">
+          <MyPlaylists />
+        </Route>
+        <Route exact path="/playlist/view/:playlistId">
+          <Playlist />
+        </Route>
+        <Route exact path="/playlist/create">
+          <CreatePlaylist /> 
+        </Route>
+        <Route exact path="/subscribervideos">
+          <SubscriberVideos />
+        </Route>
+        <Route exact path="/watch/:videoId">
           <VideoPage />
         </Route>
-        <Route path="/new/video">
+        <Route exact path="/new/video">
           <NewVideo />
         </Route>
-        <Route path="/logout">
+        <Route exact path="/logout">
           <Logout />
         </Route>
-        <Route path="/register">
+        <Route exact path="/register">
           <Register />
         </Route>
-        <Route path="/login">
+        <Route exact path="/login">
           <Login />
         </Route>
-        <Route path="/">
+        <Route exact path="/">
           <Home />
         </Route>
       </Switch>
 
       <Footer>
         <FooterTop>
-          <h5>Developed by Tarik Ulker. </h5>
+          
         </FooterTop>
         <FooterMiddle><h5>Developed by Tarik Ulker. </h5></FooterMiddle>
         <FooterBottom></FooterBottom>

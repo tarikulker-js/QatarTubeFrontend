@@ -28,7 +28,7 @@ function SubscriberVideos() {
         })
             .then((videos) => {
                 console.log("videos", videos)
-                setVideos(videos.data);
+                setVideos(videos.data.subVideos);
                 setFined(videos.data.fined);
 
                 //alert(videos.data.message);
@@ -49,7 +49,7 @@ function SubscriberVideos() {
 									justifyContent: "space-around"
 								}}>
 
-									{videos.videos.map((video) => {
+									{videos.map((video) => {
 										return (
 											<div className='card home-card' style={{ cursor: "pointer", height: "65%" }} onClick={() => window.location="/watch/" + video._id} >
 												<img

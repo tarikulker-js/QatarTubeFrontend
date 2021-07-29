@@ -16,8 +16,8 @@ function NewVideo() {
 
     const publicOptions = [
         { value: "public", label: 'Herkese açık. ' },
-        { value: "private", label: 'Sadece ben ve seçtiğim kişiler.' },
-        { value: "hidden", label: 'Sadece ben.' },
+        { value: "public", label: 'Sadece ben ve seçtiğim kişiler. (Çok Yakında!)' },
+        { value: "public", label: 'Sadece ben. (Çok Yakında!)' },
     ];
 
     var createVideo = () => {

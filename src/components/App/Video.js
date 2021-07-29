@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Layout, Form, Input, Slider, Row, Col, Image, Typography, Radio, Divider, Button } from 'antd';
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai'; //unlike \ undislike
 import { AiFillLike, AiFillDislike } from 'react-icons/ai'; //liked | undisliked
-import Popup from 'reactjs-popup'; 
+import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
 import VideoPlayer from '../VideoPlayer';
